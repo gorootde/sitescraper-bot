@@ -52,7 +52,6 @@ Create a file in `templates` folder and put go template code in it. Currently on
 # TODO List
 Things still open to be implemented:
 - Make bot monitor (and diff) sites, not only scrape a single time on startup
-- Make template file configurable in config file
 - Recursive deeplinks: Search deeplinks not only on the first level
 - Automate Groupchat join and enable per-groupchat scrape configs
 - Proper inline documentation of code
