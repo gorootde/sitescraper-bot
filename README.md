@@ -3,6 +3,8 @@ Telegram bot notifying you about website changes.
 
 This bot will monitor the configured websites for changes, and in case of a change notify you via telegram. The message format can be freely defined using templates.
 
+[![Build Status](https://dev.azure.com/gorootde/main/_apis/build/status/gorootde.sitescraper-bot?branchName=master)](https://dev.azure.com/gorootde/main/_build/latest?definitionId=1&branchName=master)
+
 # TL;DR;
 1. Create a `config.toml`
 2. Configure the websites to be scraped and your bot-token in `config.toml`
