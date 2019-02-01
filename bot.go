@@ -6,21 +6,22 @@ import (
 )
 
 type Bot struct {
-	api *tgbotapi.BotAPI
+	api         *tgbotapi.BotAPI
+	groupchatid int64
 }
 
-func NewBot(token string) *Bot {
+func NewBot(token string, groupchatid int64) *Bot {
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
 		logrus.Panic(err)
 	}
 	logrus.Printf("Authorized on account %s", bot.Self.UserName)
 	bot.Debug = true
-	return &Bot{bot}
+	return &Bot{bot, groupchatid}
 }
 
 func (bot *Bot) Send(text string) {
-	msg := tgbotapi.NewMessage(-301873798, text)
+	msg := tgbotapi.NewMessage(bot.groupchatid, text)
 	msg.ParseMode = "HTML"
 	bot.api.Send(msg)
 }

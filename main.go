@@ -13,6 +13,7 @@ import (
 
 type tomlConfig struct {
 	Token    string
+	ChatID   int64
 	Scrapers map[string]tomlSectionScraper
 }
 
@@ -70,7 +71,7 @@ func main() {
 		go scraper.Scrape(resultsChannel)
 	}
 
-	bot := NewBot(conf.Token)
+	bot := NewBot(conf.Token, conf.ChatID)
 
 	for {
 		res := <-resultsChannel

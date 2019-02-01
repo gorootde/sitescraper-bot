@@ -13,7 +13,7 @@ This bot will monitor the configured websites for changes, and in case of a chan
 Example for a single site
 ```toml
 token="123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
+chatid=-1234515
 [scrapers]
     [scrapers.firstpage]
         name="Example website"
@@ -31,6 +31,7 @@ token="123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 ```
 
 - `token` Your telegram bot token
+- `chatid` The ID of the group chat where messages will be published
 - `[scrapers]` section to define your scrapers.
 - `[scraper.<sid>]` The section to specify your scraper configuration `<sid>` is an arbitrary unique string - your scraper ID.
     - `name` Human readable name of the site to be scraped
