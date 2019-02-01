@@ -20,6 +20,7 @@ type tomlSectionScraper struct {
 	Name             string
 	URL              string
 	Deeplinkselector string
+	Template         string
 	Fields           map[string]tomlFieldDefinition
 }
 
@@ -73,7 +74,7 @@ func main() {
 
 	for {
 		res := <-resultsChannel
-		tpl := NewMessageTemplate("templates/default.tpl")
+		tpl := NewMessageTemplate(res.scraper.config.Template)
 
 		bot.Send(tpl.render(res.results))
 		time.Sleep(2 * time.Second)

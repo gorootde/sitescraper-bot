@@ -19,6 +19,7 @@ token="123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         name="Example website"
         url="http://example.com"
         deeplinkselector=".teaser-float a"
+        template="templates/default.tpl"
         [scrapers.example-site.fields]
             [scrapers.example-site.fields.imageurl]
                 selector="meta[property='og:image']"
@@ -34,7 +35,9 @@ token="123456:ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 - `[scraper.<sid>]` The section to specify your scraper configuration `<sid>` is an arbitrary unique string - your scraper ID.
     - `name` Human readable name of the site to be scraped
     - `url` The URL to use as entrypoint for scraping
-    - `deeplinkselector` Optional line. If it is missing, the field search will be performed on the page specified by `url`. If it is present, it must contain a jQuery selector selecting the links to follow.
+    - `deeplinkselector` Optional line. If it is missing, the field search will be performed on the page specified by `url`. If it is present, it must contain a jQuery selector selecting the links 
+    to follow.
+    - `template` path to the template file used to render results
     - `[scrapers.<sid>.fields]` Section for configuring the fields to scrape
         -  `[scrapers.<sid>.fields.<fieldid>]` Section for specifing the settings for a scraped field. `<fieldid>`is an arbitrary string which must be unique within the current scraper section
             - `selector` jQuery selector selecting an HTML element on the page

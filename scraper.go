@@ -12,44 +12,41 @@ import (
 )
 
 type SearchResult struct {
-	scraper string
+	scraper Scraper
 	url     string
 	results map[string]string
 }
 
 type Scraper struct {
-	url              string
-	deepLinkSelector string
-	fieldSelectors   map[string]tomlFieldDefinition
-	name             string
+	config tomlSectionScraper
 }
 
 func NewScraper(config tomlSectionScraper) *Scraper {
-	return &Scraper{config.URL, config.Deeplinkselector, config.Fields, config.Name}
+	return &Scraper{config}
 
 }
 
 func (s Scraper) Scrape(resultChannel chan *SearchResult) {
-	doc := s.getSource(s.url)
+	doc := s.getSource(s.config.URL)
 
-	if s.deepLinkSelector == "" {
+	if s.config.Deeplinkselector == "" {
 		logrus.Debug("No deeplink selector set. Switching to single page mode")
 		result := s.find(doc)
-		resultChannel <- &SearchResult{scraper: s.name, url: s.url, results: result}
+		resultChannel <- &SearchResult{scraper: s, url: s.config.URL, results: result}
 	} else {
-		logrus.Debugf("Searching for deeplinks using selector '%s'", s.deepLinkSelector)
-		doc.Find(s.deepLinkSelector).Each(func(i int, selection *goquery.Selection) {
+		logrus.Debugf("Searching for deeplinks using selector '%s'", s.config.Deeplinkselector)
+		doc.Find(s.config.Deeplinkselector).Each(func(i int, selection *goquery.Selection) {
 			band, ok := selection.Attr("href")
 			if ok {
 
 				if strings.HasPrefix(band, "/") {
-					url, _ := url.Parse(s.url)
+					url, _ := url.Parse(s.config.URL)
 					band = fmt.Sprintf("%s://%s%s", url.Scheme, url.Host, band)
 				}
 				logrus.Debugf("Scraping deeplink %s", band)
 				src := s.getSource(band)
 				result := s.find(src)
-				resultChannel <- &SearchResult{scraper: s.name, url: band, results: result}
+				resultChannel <- &SearchResult{scraper: s, url: band, results: result}
 			}
 		})
 	}
@@ -57,7 +54,7 @@ func (s Scraper) Scrape(resultChannel chan *SearchResult) {
 
 func (s Scraper) find(src *goquery.Document) map[string]string {
 	result := make(map[string]string)
-	for fieldname, definition := range s.fieldSelectors {
+	for fieldname, definition := range s.config.Fields {
 		res := src.Find(definition.Selector)
 		var value string
 		if definition.Attribute == "" {
