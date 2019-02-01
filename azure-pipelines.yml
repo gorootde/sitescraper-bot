@@ -33,6 +33,15 @@ steps:
         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure
     fi
-    go build -v .
+    go build -v -o $(Build.ArtifactStagingDirectory)/sitescraper-bot .
   workingDirectory: '$(modulePath)'
   displayName: 'Get dependencies, then build'
+
+
+- task: GitHubRelease@0
+  displayName: 'GitHub release (create)'
+  inputs:
+    gitHubConnection: gorootde
+    repositoryName: 'gorootde/sitescraper-bot'
+    isPreRelease: true
+
